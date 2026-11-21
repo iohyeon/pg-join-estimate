@@ -158,4 +158,4 @@ Intel Core i7-8850H, macOS 15.7, Docker Desktop(엔진 28.3.2, VM 메모리 7.6G
 
 ## 관련 글
 
-- 블로그 글 링크는 발행 뒤 추가합니다.
+- [옵티마이저는 무엇을 보고 스캔과 조인을 고를까: PostgreSQL에서 통계와 인덱스를 바꿔 가며 확인하기](https://develop-tracking.tistory.com/entry/옵티마이저는-무엇을-보고-스캔과-조인을-고를까-PostgreSQL에서-통계와-인덱스를-바꿔-가며-확인하기)
