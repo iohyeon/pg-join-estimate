@@ -19,7 +19,7 @@ PostgreSQL 옵티마이저가 스캔 방식과 조인 방식을 무엇을 근거
 
 선택도 실험 테이블 `t`(100만 행, 18,519페이지, [`sql/01_selectivity_table.sql`](sql/01_selectivity_table.sql))
 
-- `v`: 0~999 정수가 1,000행마다 한 번씩 들어갑니다. 범위 조건 `v < k`의 통과 비율이 `k / 1000`이 되도록 했습니다.
+- `v`: 0부터 999까지의 정수가 1,000행마다 한 번씩 들어갑니다. 범위 조건 `v < k`의 통과 비율이 `k / 1000`이 되도록 했습니다.
 - `status`: 값 3종(`DONE` 90%, `PENDING` 9%, `FAILED` 1%). 값 종류가 적은 컬럼에서 값마다 계획이 달라지는지 보려고 비율을 크게 벌렸습니다.
 - 같은 값의 행이 테이블 전체에 일정한 간격으로 흩어져 있습니다. `FAILED`는 100행마다 1행이고 한 페이지에 약 54행이 들어가므로, 1%의 행이 테이블 절반이 넘는 페이지에 퍼집니다.
 
@@ -75,7 +75,7 @@ docker rm -f pgje
 | 확인한 것 | 결과 | 테스트 |
 |---|---|---|
 | `status` 값별 스캔 | `FAILED`(1%) Index Scan, `PENDING`(9%) Bitmap Heap Scan, `DONE`(90%) Seq Scan | `SelectivityTest` |
-| 등호 조건의 추정 행 수 | `pg_stats`의 MCV 빈도 × 100만과 같음(MCV 목록이 세 값을 모두 담는지도 단언) | `SelectivityTest` |
+| 등호 조건의 추정 행 수 | `pg_stats`의 MCV 빈도에 100만을 곱한 값과 같음(MCV 목록이 세 값을 모두 담는지도 단언) | `SelectivityTest` |
 | 범위 조건 `v < k` | 0.1%, 10%는 Bitmap Heap Scan, 90%는 Seq Scan. 한 번 Seq Scan으로 넘어가면 돌아오지 않음 | `SelectivityTest` |
 | 오래된 통계(자동 분석 끄고 값 변경) | 조인 추정 27행(실제 300,000)으로 Nested Loop, `ANALYZE` 뒤 298,623행으로 Hash Join | `EstimateTest` |
 | 상관된 세 조건(실제 10,000행) | 기본 통계 98행, `ANALYZE` 다시 실행 뒤 101행, 확장 통계 뒤 10,137행 | `EstimateTest` |
